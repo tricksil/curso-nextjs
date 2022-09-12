@@ -11,7 +11,7 @@ export default class QuestaoModel {
     id: number,
     enunciado: string,
     respostas: RespostaModel[],
-    acertou: boolean
+    acertou: boolean = false
   ) {
     this.#id = id
     this.#enunciado = enunciado
