@@ -13,7 +13,6 @@ export default function Home() {
   const [questao, setQuestao] = useState(questaoMock)
 
   function respostaFornecida(indice: number) {
-    console.log(indice)
     setQuestao(questao.responderCom(indice))
   }
 
@@ -34,6 +33,7 @@ export default function Home() {
     >
       <Questao
         valor={questao}
+        tempoPraResposta={5}
         respostaFornecida={respostaFornecida}
         tempoEsgotado={tempoEsgotado}
       />
