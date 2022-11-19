@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { useState } from 'react'
 import { AuthInput } from '../components/auth/AuthInput'
 import { IconeGoogle } from '../components/icons'
@@ -16,11 +17,20 @@ export default function Autenticacao() {
   }
 
   return (
-    <div className='flex flex-col h-screen items-center justify-center'>
-      <div className='w-1/2'>
+    <div className='flex h-screen items-center justify-center'>
+      <div className='hidden md:block md:w-1/2 lg:w-2/3'>
+        <picture>
+          <img
+            src='https://source.unsplash.com/random'
+            alt='Imagem da Tela de Autenticação'
+            className='h-screen w-full object-cover'
+          />
+        </picture>
+      </div>
+      <div className='m-10 w-full md:w-1/2 lg:w-1/3'>
         <h1
           className={`
-        text-xl font-bold mb-5
+        text-3xl font-bold mb-5
       `}
         >
           {modo === 'login'
@@ -54,9 +64,9 @@ export default function Autenticacao() {
         <button
           onClick={submeter}
           className={`
-        border border-gray-900
+        border border-gray-900 hover:border-none
         flex items-center justify-center
-        w-full bg-white hover:bg-red-400
+        w-full bg-white hover:bg-red-400 hover:text-white
         text-gray-900 rounded-lg  px-4 py-3 mt-6
         
       `}
@@ -74,6 +84,35 @@ export default function Autenticacao() {
             'Cadastrar com o google'
           )}
         </button>
+        {modo === 'login' ? (
+          <p className='mt-8'>
+            Novo por aqui?
+            <a
+              onClick={() => setModo('cadastro')}
+              className={`
+              text-blue-500 hover:text-blue-700 font-semibold
+              cursor-pointer
+            `}
+            >
+              {' '}
+              Crie uma Conta Gratuitamente
+            </a>
+          </p>
+        ) : (
+          <p className='mt-8'>
+            Já faz parte da nossa comunidade?
+            <a
+              onClick={() => setModo('login')}
+              className={`
+              text-blue-500 hover:text-blue-700 font-semibold
+              cursor-pointer
+            `}
+            >
+              {' '}
+              Entre com as suas Credenciais
+            </a>
+          </p>
+        )}
       </div>
     </div>
   )
