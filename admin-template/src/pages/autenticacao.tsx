@@ -2,19 +2,24 @@ import { useState } from 'react'
 import { AuthInput } from '../components/auth/AuthInput'
 import { IconeAtencao, IconeGoogle } from '../components/icons'
 import useAuth from '../data/hook/useAuth'
+import { AuthError } from 'firebase/auth'
 
 export default function Autenticacao() {
-  const { usuario, loginGoogle } = useAuth()
+  const { cadastrar, login, loginGoogle } = useAuth()
   const [error, setError] = useState<string | null>(null)
   const [modo, setModo] = useState<'login' | 'cadastro'>('login')
   const [email, setEmail] = useState<string>('')
   const [senha, setSenha] = useState<string>('')
 
-  function submeter() {
-    if (modo === 'login') {
-      console.log('login')
-    } else {
-      console.log('cadastrar')
+  async function submeter() {
+    try {
+      if (modo === 'login') {
+        if (login) await login(email, senha)
+      } else {
+        if (cadastrar) await cadastrar(email, senha)
+      }
+    } catch (error: any) {
+      exibirError(error?.message ?? 'Error desconhecido!')
     }
   }
 
@@ -94,17 +99,7 @@ export default function Autenticacao() {
       `}
         >
           {IconeGoogle}
-          {modo === 'login' ? (
-            <span
-              className={`
-            ml-3
-          `}
-            >
-              Entrar com o google
-            </span>
-          ) : (
-            'Cadastrar com o google'
-          )}
+          <span className='ml-3'>Entrar com o google</span>
         </button>
         {modo === 'login' ? (
           <p className='mt-8'>

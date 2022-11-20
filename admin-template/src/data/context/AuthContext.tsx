@@ -1,8 +1,10 @@
 import route from 'next/router'
 import { createContext, useEffect, useState } from 'react'
 import {
+  createUserWithEmailAndPassword,
   GoogleAuthProvider,
   onIdTokenChanged,
+  signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
   User,
@@ -14,6 +16,8 @@ import Cookies from 'js-cookie'
 interface AuthContextProps {
   usuario?: Usuario
   carregando?: boolean
+  login?: (email: string, senha: string) => Promise<void>
+  cadastrar?: (email: string, senha: string) => Promise<void>
   loginGoogle?: () => Promise<void>
   logout?: () => Promise<void>
 }
@@ -65,11 +69,33 @@ export function AuthProvider(props: AuthProviderProps) {
     }
   }
 
+  async function login(email: string, senha: string) {
+    try {
+      setCarregando(true)
+      const resp = await signInWithEmailAndPassword(auth, email, senha)
+      await configurarSessao(resp.user)
+      route.push('/')
+    } finally {
+      setCarregando(false)
+    }
+  }
+
+  async function cadastrar(email: string, senha: string) {
+    try {
+      setCarregando(true)
+      const resp = await createUserWithEmailAndPassword(auth, email, senha)
+      await configurarSessao(resp.user)
+      route.push('/')
+    } finally {
+      setCarregando(false)
+    }
+  }
+
   async function loginGoogle() {
     try {
       setCarregando(true)
       const resp = await signInWithPopup(auth, new GoogleAuthProvider())
-      configurarSessao(resp.user)
+      await configurarSessao(resp.user)
       route.push('/')
     } finally {
       setCarregando(false)
@@ -96,7 +122,16 @@ export function AuthProvider(props: AuthProviderProps) {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ usuario, logout, loginGoogle, carregando }}>
+    <AuthContext.Provider
+      value={{
+        usuario,
+        carregando,
+        logout,
+        loginGoogle,
+        login,
+        cadastrar,
+      }}
+    >
       {props.children}
     </AuthContext.Provider>
   )
