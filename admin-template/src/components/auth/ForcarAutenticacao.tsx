@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import Image from 'next/image'
 import router from 'next/router'
 import loading from '../../../public/images/loading.gif'
@@ -10,7 +11,21 @@ interface ForcarAutenticacaoProps {
 export default function ForcarAutenticacao(props: ForcarAutenticacaoProps) {
   const { usuario, carregando } = useAuth()
   function renderizarConteudo() {
-    return <>{props.children}</>
+    return (
+      <>
+        <Head>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+          if(!document.cookie.includes("admin-template-mp-auth")){
+            window.location = "/autenticacao"
+        }`,
+            }}
+          ></script>
+        </Head>
+        {props.children}
+      </>
+    )
   }
 
   function renderizarCarregando() {
@@ -20,7 +35,7 @@ export default function ForcarAutenticacao(props: ForcarAutenticacaoProps) {
         flex justify-center items-center h-screen
       `}
       >
-        <Image src={loading} alt='Loading' />
+        <Image src={loading} alt='Loading' priority />
       </div>
     )
   }
