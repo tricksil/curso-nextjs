@@ -1,9 +1,11 @@
-import Image from 'next/image'
 import { useState } from 'react'
 import { AuthInput } from '../components/auth/AuthInput'
-import { IconeGoogle } from '../components/icons'
+import { IconeAtencao, IconeGoogle } from '../components/icons'
+import useAuth from '../data/hook/useAuth'
 
 export default function Autenticacao() {
+  const { usuario, loginGoogle } = useAuth()
+  const [error, setError] = useState<string | null>(null)
   const [modo, setModo] = useState<'login' | 'cadastro'>('login')
   const [email, setEmail] = useState<string>('')
   const [senha, setSenha] = useState<string>('')
@@ -14,6 +16,11 @@ export default function Autenticacao() {
     } else {
       console.log('cadastrar')
     }
+  }
+
+  function exibirError(msg: string | null, tempoEmSegunos = 5) {
+    setError(msg)
+    setTimeout(() => setError(null), tempoEmSegunos * 1000)
   }
 
   return (
@@ -37,6 +44,21 @@ export default function Autenticacao() {
             ? 'Entre com a Sua Conta'
             : 'Cadastre-se na Plataforma'}
         </h1>
+        {error ? (
+          <div
+            className={`
+            flex items-center
+            bg-red-400 text-white py-3 px-5 my-2
+            border border-red-700 rounded-lg
+          `}
+          >
+            {IconeAtencao()}
+            <span className='ml-3 '>{error}</span>
+          </div>
+        ) : (
+          false
+        )}
+
         <AuthInput
           label='Email'
           tipo='email'
@@ -62,7 +84,7 @@ export default function Autenticacao() {
         </button>
         <hr className='my-6 border-gray-300 w-full' />
         <button
-          onClick={submeter}
+          onClick={loginGoogle}
           className={`
         border border-gray-900 hover:border-none
         flex items-center justify-center
