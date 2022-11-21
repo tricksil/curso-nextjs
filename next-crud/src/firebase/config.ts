@@ -13,7 +13,7 @@ const firebaseConfig = {
 let app
 let db
 
-if (!getApps().length) {
+if (!getApps()?.length) {
   // Initialize Firebase
   app = initializeApp(firebaseConfig)
   db = getFirestore(app)
