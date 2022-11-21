@@ -1,5 +1,5 @@
 import { initializeApp, getApps } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
+import { Firestore, getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -11,7 +11,7 @@ const firebaseConfig = {
 }
 
 let app
-let db
+let db: Firestore
 
 if (!getApps()?.length) {
   // Initialize Firebase
