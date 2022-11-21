@@ -5,10 +5,19 @@ import Cliente from '../core/Cliente'
 export default function Home() {
   const clientes = [
     new Cliente('Priscila', 21, '1'),
-    new Cliente('Debora', 21, '2'),
+    new Cliente('Andrielly', 23, '2'),
     new Cliente('Patrick', 25, '3'),
     new Cliente('Pedro', 27, '4'),
   ]
+
+  function clienteSelecionado(cliente: Cliente) {
+    console.log(cliente.nome)
+  }
+
+  function clienteExcluido(cliente: Cliente) {
+    console.log(`Excluir... ${cliente.nome}`)
+  }
+
   return (
     <div
       className={`
@@ -18,7 +27,11 @@ export default function Home() {
     `}
     >
       <Layout titulo='Cadastro Simples'>
-        <Tabela clientes={clientes}></Tabela>
+        <Tabela
+          clientes={clientes}
+          clienteSelecionado={clienteSelecionado}
+          clienteExcluido={clienteExcluido}
+        ></Tabela>
       </Layout>
     </div>
   )
